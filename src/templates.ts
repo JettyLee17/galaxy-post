@@ -19,8 +19,8 @@ export const templates: Record<string, Template> = {
     render: (content) => `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f1ea">
         <tr>
-          <td align="center" style="padding: 40px 0;">
-            <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #fdfbf7; border: 1px solid #e0d5c1;">
+          <td align="center" style="padding: 20px 10px;">
+            <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #fdfbf7; border: 1px solid #e0d5c1;">
               <tr>
                 <td height="4" bgcolor="#8b7355" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
               </tr>
@@ -47,14 +47,14 @@ export const templates: Record<string, Template> = {
     render: (content) => `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f0ede4">
         <tr>
-          <td align="center" style="padding: 40px 0;">
-            <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #e8e2d6; border: 15px solid #ffffff;">
+          <td align="center" style="padding: 20px 10px;">
+            <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #e8e2d6; border: 10px solid #ffffff;">
               <tr>
-                <td style="padding: 30px; font-family: 'STKaiti', '楷体', serif;">
+                <td style="padding: 20px; font-family: 'STKaiti', '楷体', serif;">
                   <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
-                      <td width="80" height="100" align="center" valign="middle" style="border: 2px dashed #8b7355; color: #8b7355; font-size: 12px;">
-                        邮票贴于此处
+                      <td width="60" height="80" align="center" valign="middle" style="border: 2px dashed #8b7355; color: #8b7355; font-size: 10px;">
+                        邮票
                       </td>
                       <td align="right" valign="top">
                         <div style="font-size: 24px; font-weight: bold; color: #8b7355; border-bottom: 2px solid #8b7355; display: inline-block; padding-bottom: 5px;">POSTCARD</div>
@@ -97,10 +97,10 @@ export const templates: Record<string, Template> = {
     render: (content) => `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
         <tr>
-          <td align="center" style="padding: 50px 0;">
-            <table width="600" cellpadding="0" cellspacing="0" border="0" style="border: 1px solid #eeeeee;">
+          <td align="center" style="padding: 30px 10px;">
+            <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; border: 1px solid #eeeeee;">
               <tr>
-                <td style="padding: 50px; font-family: 'Microsoft YaHei', Arial, sans-serif;">
+                <td style="padding: 30px; font-family: 'Microsoft YaHei', Arial, sans-serif;">
                   <div style="margin-bottom: 40px; color: #636e72; font-size: 12px; letter-spacing: 2px;">
                     LETTER / ${new Date().toLocaleDateString('zh-CN')}
                   </div>
@@ -124,11 +124,11 @@ export const templates: Record<string, Template> = {
     render: (content) => `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#0f172a">
         <tr>
-          <td align="center" style="padding: 40px 0;">
+          <td align="center" style="padding: 20px 10px;">
             <!-- Outer Container -->
-            <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #1e293b; border: 1px solid #334155;">
+            <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #1e293b; border: 1px solid #334155;">
               <tr>
-                <td style="padding: 40px; font-family: 'Microsoft YaHei', Arial, sans-serif;">
+                <td style="padding: 30px; font-family: 'Microsoft YaHei', Arial, sans-serif;">
                   
                   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 30px;">
                     <tr>
@@ -168,10 +168,10 @@ export const templates: Record<string, Template> = {
     render: (content) => `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f1f8e9">
         <tr>
-          <td align="center" style="padding: 40px 0;">
-            <table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color: #f9fff5; border: 2px solid #a5d6a7;">
+          <td align="center" style="padding: 20px 10px;">
+            <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #f9fff5; border: 2px solid #a5d6a7;">
               <tr>
-                <td style="padding: 40px; font-family: 'STKaiti', '楷体', serif;">
+                <td style="padding: 30px; font-family: 'STKaiti', '楷体', serif;">
                   <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                       <td style="padding-right: 20px;">

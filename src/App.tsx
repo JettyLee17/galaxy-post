@@ -23,9 +23,19 @@ function App() {
       const html = templates[selectedTemplate].render(content);
 
       if (mode === 'rich') {
-        const blob = new Blob([html], { type: 'text/html' });
-        const data = [new ClipboardItem({ 'text/html': blob })];
-        await navigator.clipboard.write(data);
+        // Fallback for mobile browsers that might not support ClipboardItem fully
+        if (navigator.clipboard && window.ClipboardItem) {
+          try {
+            const blob = new Blob([html], { type: 'text/html' });
+            const data = [new ClipboardItem({ 'text/html': blob })];
+            await navigator.clipboard.write(data);
+          } catch (e) {
+            console.warn('ClipboardItem failed, trying execCommand fallback', e);
+            copyToClipboardFallback(html);
+          }
+        } else {
+          copyToClipboardFallback(html);
+        }
       } else {
         await navigator.clipboard.writeText(html);
       }
@@ -34,7 +44,31 @@ function App() {
       setTimeout(() => setShowCopySuccess(false), 2000);
     } catch (err) {
       console.error('Failed to copy: ', err);
+      alert('复制失败，请重试或尝试手动选择内容复制。');
     }
+  };
+
+  const copyToClipboardFallback = (html: string) => {
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    container.style.position = 'fixed';
+    container.style.pointerEvents = 'none';
+    container.style.opacity = '0';
+    document.body.appendChild(container);
+
+    const range = document.createRange();
+    range.selectNode(container);
+    window.getSelection()?.removeAllRanges();
+    window.getSelection()?.addRange(range);
+
+    try {
+      document.execCommand('copy');
+    } catch (err) {
+      console.error('Fallback copy failed', err);
+    }
+
+    document.body.removeChild(container);
+    window.getSelection()?.removeAllRanges();
   };
 
   return (

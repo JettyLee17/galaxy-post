@@ -1,73 +1,60 @@
-# React + TypeScript + Vite
+# 🌌 银河驿站 (Galaxy Post)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+银河驿站是一个专为 **QQ 邮箱** 及国内主流邮箱客户端设计的文艺信件 Web App。它解决了电子信件排版单调、缺乏仪式感的痛点，让你的每一封 Email 都能像实体信件一样精美、优雅。
 
-Currently, two official plugins are available:
+## ✨ 功能特性
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **🎭 文艺模板库**：预置了多款精美信纸模板，包括“复古明信片”、“星空之境”、“青竹幽境”等，满足不同的通信场景。
+- **👁️ 实时预览**：书写时即刻查看在 QQ 邮箱中的最终渲染效果，所见即所得。
+- **📋 一键导出**：支持“复制富文本”功能，直接粘贴至 QQ 邮箱写信窗口，完美保留所有复杂的 HTML 布局与样式。
+- **🛡️ 工业级兼容性**：基于专业的邮件 HTML 开发指南重构，全面采用 `table` 布局与内联样式，确保在各大邮箱客户端（Web、移动端、Outlook）中均不崩版。
+- **🎨 极简交互**：基于 Tailwind CSS v4 打造的现代 UI，书写体验如丝般顺滑。
 
-## React Compiler
+## 🛠️ 技术栈
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **框架**: React 19 + TypeScript
+- **构建**: Vite 8
+- **样式**: Tailwind CSS v4
+- **图标**: Lucide React
+- **动画**: Framer Motion
 
-## Expanding the ESLint configuration
+## 🚀 快速开始
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 开发环境
+```bash
+# 安装依赖
+npm install
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 启动开发服务器
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 生产构建
+```bash
+# 执行构建
+npm run build
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# 预览构建产物
+npm run preview
 ```
+
+## 📝 使用指南
+
+1. **选择信纸**：在左侧面板中选择你喜欢的信纸或明信片样式。
+2. **书写内容**：在编辑器中输入你的信件内容。
+3. **复制发送**：
+   - 点击 **“复制富文本”**（推荐）：直接在 QQ 邮箱写信正文框中粘贴。
+   - 点击 **“复制 HTML”**：适用于需要手动插入 HTML 代码的场景。
+4. **注意事项**：为了获得最佳显示效果，建议在发送前确保预览效果符合预期。
+
+## 📜 兼容性说明
+
+本项目生成的 HTML 代码严格遵守以下规范：
+- 使用 `table` 代替 `div` 进行布局。
+- 所有 CSS 样式强制 Inline（内联）。
+- 仅使用安全、通用的 CSS 属性（弃用 flex/grid/position）。
+- 使用系统内置字体库，确保跨设备字体显示一致。
+
+---
+
+*“让每一封邮件，都承载着文字的重量。”*

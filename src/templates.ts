@@ -1,22 +1,22 @@
 export interface Template {
   name: string;
-  render: (content: string) => string;
+  render: (content: string, isEditable?: boolean) => string;
 }
 
-const formatContent = (content: string, color: string = '#444') => {
-  if (!content) return `<p style="color: #999; font-style: italic; margin: 0; padding: 0;">信件内容将显示在此处...</p>`;
-  return content
-    .split('\n')
-    .map(line => line.trim()
-      ? `<p style="margin: 0 0 1em 0; line-height: 1.8; color: ${color}; font-size: 16px;">${line}</p>`
-      : '<div style="height: 1em;"></div>')
-    .join('');
+const formatContent = (content: string, color: string = '#444', isEditable: boolean = false) => {
+  return `
+    <div class="editable-content" 
+         ${isEditable ? 'contenteditable="true"' : ''} 
+         data-placeholder="在此输入您的信件内容..."
+         style="outline: none; min-height: 250px; cursor: ${isEditable ? 'text' : 'default'}; color: ${color}; font-size: 16px; line-height: 1.8; word-break: break-word; overflow-wrap: break-word; text-align: left;">
+      ${content}
+    </div>`;
 };
 
 export const templates: Record<string, Template> = {
   classic: {
     name: '经典信纸',
-    render: (content) => `
+    render: (content, isEditable) => `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f1ea">
         <tr>
           <td align="center" style="padding: 20px 10px;">
@@ -26,7 +26,7 @@ export const templates: Record<string, Template> = {
               </tr>
               <tr>
                 <td style="padding: 40px; font-family: 'Microsoft YaHei', 'SimSun', serif;">
-                  ${formatContent(content, '#444')}
+                  ${formatContent(content, '#444', isEditable)}
                   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 60px;">
                     <tr>
                       <td align="right" style="border-top: 1px solid #e0d5c1; padding-top: 20px; font-style: italic; color: #8b7355; font-size: 14px;">
@@ -44,7 +44,7 @@ export const templates: Record<string, Template> = {
   },
   postcard: {
     name: '复古明信片',
-    render: (content) => `
+    render: (content, isEditable) => `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f0ede4">
         <tr>
           <td align="center" style="padding: 20px 10px;">
@@ -66,7 +66,7 @@ export const templates: Record<string, Template> = {
                   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 30px;">
                     <tr>
                       <td style="border-left: 2px solid #8b7355; padding-left: 20px; min-height: 200px;">
-                        ${formatContent(content, '#3d3d3d')}
+                        ${formatContent(content, '#3d3d3d', isEditable)}
                       </td>
                     </tr>
                   </table>
@@ -94,7 +94,7 @@ export const templates: Record<string, Template> = {
   },
   minimalist: {
     name: '现代极简',
-    render: (content) => `
+    render: (content, isEditable) => `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
         <tr>
           <td align="center" style="padding: 30px 10px;">
@@ -104,7 +104,7 @@ export const templates: Record<string, Template> = {
                   <div style="margin-bottom: 40px; color: #636e72; font-size: 12px; letter-spacing: 2px;">
                     LETTER / ${new Date().toLocaleDateString('zh-CN')}
                   </div>
-                  ${formatContent(content, '#2d3436')}
+                  ${formatContent(content, '#2d3436', isEditable)}
                   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 60px;">
                     <tr>
                       <td width="40" height="1" bgcolor="#dfe6e9" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
@@ -121,7 +121,7 @@ export const templates: Record<string, Template> = {
   },
   starry: {
     name: '星空之境',
-    render: (content) => `
+    render: (content, isEditable) => `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#0f172a">
         <tr>
           <td align="center" style="padding: 20px 10px;">
@@ -146,7 +146,7 @@ export const templates: Record<string, Template> = {
                     </tr>
                   </table>
 
-                  ${formatContent(content, '#e2e8f0')}
+                  ${formatContent(content, '#e2e8f0', isEditable)}
 
                   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 50px;">
                     <tr>
@@ -165,7 +165,7 @@ export const templates: Record<string, Template> = {
   },
   bamboo: {
     name: '青竹幽境',
-    render: (content) => `
+    render: (content, isEditable) => `
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f1f8e9">
         <tr>
           <td align="center" style="padding: 20px 10px;">
@@ -175,7 +175,7 @@ export const templates: Record<string, Template> = {
                   <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                       <td style="padding-right: 20px;">
-                        ${formatContent(content, '#2e7d32')}
+                        ${formatContent(content, '#2e7d32', isEditable)}
                       </td>
                       <td width="1" bgcolor="#a5d6a7" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
                       <td width="20" style="font-size: 1px; line-height: 1px;">&nbsp;</td>

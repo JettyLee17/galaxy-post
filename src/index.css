@@ -27,6 +27,13 @@ body {
   --width-sidebar: 450px;
 }
 
+.editable-content:empty::before {
+  content: attr(data-placeholder);
+  color: #94a3b8;
+  font-style: italic;
+  pointer-events: none;
+}
+
 /* Custom styles for the letter preview */
 .letter-preview {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);

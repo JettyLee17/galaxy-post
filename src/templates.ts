@@ -3,6 +3,19 @@ export interface Template {
   render: (content: string, isEditable?: boolean) => string;
 }
 
+const getResponsiveStyles = () => `
+  <style>
+    @media only screen and (max-width: 600px) {
+      .inner-padding {
+        padding: 20px !important;
+      }
+      .outer-padding {
+        padding: 10px 5px !important;
+      }
+    }
+  </style>
+`;
+
 const formatContent = (content: string, color: string = '#444', isEditable: boolean = false) => {
   return `
     <div class="editable-content" 
@@ -17,23 +30,17 @@ export const templates: Record<string, Template> = {
   classic: {
     name: '经典信纸',
     render: (content, isEditable) => `
+      ${getResponsiveStyles()}
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f1ea">
         <tr>
-          <td align="center" style="padding: 20px 10px;">
+          <td align="center" class="outer-padding" style="padding: 20px 10px;">
             <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #fdfbf7; border: 1px solid #e0d5c1;">
               <tr>
                 <td height="4" bgcolor="#8b7355" style="font-size: 1px; line-height: 1px;">&nbsp;</td>
               </tr>
               <tr>
-                <td style="padding: 40px; font-family: 'Microsoft YaHei', 'SimSun', serif;">
+                <td class="inner-padding" style="padding: 40px; font-family: 'Microsoft YaHei', 'SimSun', serif;">
                   ${formatContent(content, '#444', isEditable)}
-                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top: 60px;">
-                    <tr>
-                      <td align="right" style="border-top: 1px solid #e0d5c1; padding-top: 20px; font-style: italic; color: #8b7355; font-size: 14px;">
-                        此致，敬礼
-                      </td>
-                    </tr>
-                  </table>
                 </td>
               </tr>
             </table>
@@ -45,12 +52,13 @@ export const templates: Record<string, Template> = {
   postcard: {
     name: '复古明信片',
     render: (content, isEditable) => `
+      ${getResponsiveStyles()}
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f0ede4">
         <tr>
-          <td align="center" style="padding: 20px 10px;">
+          <td align="center" class="outer-padding" style="padding: 20px 10px;">
             <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #e8e2d6; border: 10px solid #ffffff;">
               <tr>
-                <td style="padding: 20px; font-family: 'STKaiti', '楷体', serif;">
+                <td class="inner-padding" style="padding: 20px; font-family: 'STKaiti', '楷体', serif;">
                   <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                       <td width="60" height="80" align="center" valign="middle" style="border: 2px dashed #8b7355; color: #8b7355; font-size: 10px;">
@@ -95,12 +103,13 @@ export const templates: Record<string, Template> = {
   minimalist: {
     name: '现代极简',
     render: (content, isEditable) => `
+      ${getResponsiveStyles()}
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#ffffff">
         <tr>
-          <td align="center" style="padding: 30px 10px;">
+          <td align="center" class="outer-padding" style="padding: 30px 10px;">
             <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; border: 1px solid #eeeeee;">
               <tr>
-                <td style="padding: 30px; font-family: 'Microsoft YaHei', Arial, sans-serif;">
+                <td class="inner-padding" style="padding: 30px; font-family: 'Microsoft YaHei', Arial, sans-serif;">
                   <div style="margin-bottom: 40px; color: #636e72; font-size: 12px; letter-spacing: 2px;">
                     LETTER / ${new Date().toLocaleDateString('zh-CN')}
                   </div>
@@ -122,13 +131,14 @@ export const templates: Record<string, Template> = {
   starry: {
     name: '星空之境',
     render: (content, isEditable) => `
+      ${getResponsiveStyles()}
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#0f172a">
         <tr>
-          <td align="center" style="padding: 20px 10px;">
+          <td align="center" class="outer-padding" style="padding: 20px 10px;">
             <!-- Outer Container -->
             <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #1e293b; border: 1px solid #334155;">
               <tr>
-                <td style="padding: 30px; font-family: 'Microsoft YaHei', Arial, sans-serif;">
+                <td class="inner-padding" style="padding: 30px; font-family: 'Microsoft YaHei', Arial, sans-serif;">
                   
                   <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom: 30px;">
                     <tr>
@@ -166,12 +176,13 @@ export const templates: Record<string, Template> = {
   bamboo: {
     name: '青竹幽境',
     render: (content, isEditable) => `
+      ${getResponsiveStyles()}
       <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f1f8e9">
         <tr>
-          <td align="center" style="padding: 20px 10px;">
+          <td align="center" class="outer-padding" style="padding: 20px 10px;">
             <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #f9fff5; border: 2px solid #a5d6a7;">
               <tr>
-                <td style="padding: 30px; font-family: 'STKaiti', '楷体', serif;">
+                <td class="inner-padding" style="padding: 30px; font-family: 'STKaiti', '楷体', serif;">
                   <table width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                       <td style="padding-right: 20px;">
@@ -188,6 +199,75 @@ export const templates: Record<string, Template> = {
                       </td>
                     </tr>
                   </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    `
+  },
+  sakura: {
+    name: '落樱缤纷',
+    render: (content, isEditable) => `
+      ${getResponsiveStyles()}
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#fff5f7">
+        <tr>
+          <td align="center" class="outer-padding" style="padding: 20px 10px;">
+            <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #ffffff; border: 1px solid #ffd1dc; border-radius: 8px;">
+              <tr>
+                <td class="inner-padding" style="padding: 35px; font-family: 'Microsoft YaHei', sans-serif;">
+                  <div style="text-align: right; color: #ffb7c5; font-size: 20px; margin-bottom: 20px;">🌸</div>
+                  ${formatContent(content, '#d23669', isEditable)}
+                  <div style="margin-top: 30px; border-top: 1px dashed #ffd1dc; padding-top: 15px; text-align: center; color: #ffb7c5; font-size: 12px;">
+                    春日迟迟，卉木萋萋
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    `
+  },
+  midnight: {
+    name: '深夜食堂',
+    render: (content, isEditable) => `
+      ${getResponsiveStyles()}
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#1a1a1a">
+        <tr>
+          <td align="center" class="outer-padding" style="padding: 20px 10px;">
+            <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #262626; border-left: 4px solid #f1c40f;">
+              <tr>
+                <td class="inner-padding" style="padding: 30px; font-family: 'Microsoft YaHei', sans-serif;">
+                  <div style="color: #f1c40f; font-size: 12px; margin-bottom: 30px; letter-spacing: 2px;">MIDNIGHT JOURNAL</div>
+                  ${formatContent(content, '#e0e0e0', isEditable)}
+                  <div style="margin-top: 40px; text-align: right;">
+                    <span style="color: #f1c40f; font-size: 18px;">🌙</span>
+                  </div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+      </table>
+    `
+  },
+  elegant: {
+    name: '雅致墨韵',
+    render: (content, isEditable) => `
+      ${getResponsiveStyles()}
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f9f7f2">
+        <tr>
+          <td align="center" class="outer-padding" style="padding: 20px 10px;">
+            <table width="100%" maxWidth="600" cellpadding="0" cellspacing="0" border="0" style="width: 100%; max-width: 600px; background-color: #ffffff; border: 1px solid #333333;">
+              <tr>
+                <td class="inner-padding" style="padding: 40px; font-family: 'STKaiti', '楷体', serif; position: relative;">
+                  <div style="border: 1px solid #333333; padding: 5px; margin-bottom: 20px; display: inline-block; font-size: 12px;">限时信件</div>
+                  ${formatContent(content, '#1a1a1a', isEditable)}
+                  <div style="margin-top: 50px; text-align: right; border-top: 2px solid #333333; padding-top: 10px;">
+                    <span style="font-weight: bold; font-size: 16px;">银河驿站 谨启</span>
+                  </div>
                 </td>
               </tr>
             </table>

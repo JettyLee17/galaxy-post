@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { Mail, Copy, Download, Palette, Layout, CheckCircle2, X, Eye, Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight, Send } from 'lucide-react';
+import { Mail, Copy, Download, Palette, Layout, CheckCircle2, X, Eye, Bold, Italic, Underline, AlignLeft, AlignCenter, AlignRight, Send, Type, Image as ImageIcon } from 'lucide-react';
 import { templates } from './templates';
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import * as htmlToImage from 'html-to-image';
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -13,7 +14,6 @@ function App() {
   const [selectedTemplate, setSelectedTemplate] = useState(Object.keys(templates)[0]);
   const [showCopySuccess, setShowCopySuccess] = useState(false);
   const [mobileView, setMobileView] = useState<'editor' | 'preview'>('preview');
-  const [showTemplateMobile, setShowTemplateMobile] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
   const lastTemplateRef = useRef(selectedTemplate);
 
@@ -52,6 +52,88 @@ function App() {
       if (editableDiv) {
         setContent(editableDiv.innerHTML);
       }
+    }
+  };
+
+  const handleIndent = () => {
+    // Custom first line indent logic that works on the current paragraph
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) return;
+
+    const editableDiv = previewRef.current?.querySelector('.editable-content') as HTMLDivElement;
+    if (!editableDiv) return;
+
+    let node = selection.anchorNode;
+    if (!node) return;
+
+    // Find the nearest block-level ancestor within the editable area
+    let blockElement = node.nodeType === 1 ? (node as HTMLElement) : node.parentElement;
+    
+    while (blockElement && blockElement !== editableDiv && 
+           !['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'BLOCKQUOTE'].includes(blockElement.tagName)) {
+      blockElement = blockElement.parentElement;
+    }
+
+    if (blockElement && blockElement !== editableDiv) {
+      // Toggle indent on the found block element
+      if (blockElement.style.textIndent === '2em') {
+        blockElement.style.textIndent = '';
+      } else {
+        blockElement.style.textIndent = '2em';
+      }
+    } else {
+      // If we're directly in the container or no block found, 
+      // first ensure the content is wrapped in a block (usually <p>)
+      document.execCommand('formatBlock', false, 'p');
+      
+      // Get the updated selection and try to find the block again
+      const newSelection = window.getSelection();
+      const newNode = newSelection?.anchorNode;
+      let newBlock = newNode?.nodeType === 1 ? (newNode as HTMLElement) : newNode?.parentElement;
+      
+      while (newBlock && newBlock !== editableDiv && 
+             !['P', 'DIV', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6', 'LI', 'BLOCKQUOTE'].includes(newBlock.tagName)) {
+        newBlock = newBlock.parentElement;
+      }
+      
+      if (newBlock && newBlock !== editableDiv) {
+        newBlock.style.textIndent = '2em';
+      }
+    }
+
+    // Trigger update manually
+    setContent(editableDiv.innerHTML);
+  };
+
+  const exportAsImage = async () => {
+    if (!previewRef.current) return;
+
+    try {
+      // Find the inner table to export (the actual letter)
+      const table = previewRef.current.querySelector('table');
+      if (!table) return;
+
+      // Temporarily set contenteditable to false for export
+      const editableDiv = table.querySelector('.editable-content') as HTMLDivElement;
+      const wasEditable = editableDiv?.getAttribute('contenteditable');
+      if (editableDiv) editableDiv.setAttribute('contenteditable', 'false');
+
+      const dataUrl = await htmlToImage.toPng(table, {
+        quality: 1.0,
+        pixelRatio: 2,
+        backgroundColor: '#f8fafc'
+      });
+
+      // Restore editability
+      if (editableDiv && wasEditable) editableDiv.setAttribute('contenteditable', wasEditable);
+
+      const link = document.createElement('a');
+      link.download = `galaxy-post-${new Date().getTime()}.png`;
+      link.href = dataUrl;
+      link.click();
+    } catch (error) {
+      console.error('Error exporting image:', error);
+      alert('导出图片失败，请重试');
     }
   };
 
@@ -142,6 +224,13 @@ function App() {
               {mobileView === 'preview' ? <Palette className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </button>
             <button
+              onClick={exportAsImage}
+              className="p-1.5 text-indigo-600 bg-white rounded-full shadow-sm"
+              title="导出图片"
+            >
+              <ImageIcon className="w-4 h-4" />
+            </button>
+            <button
               onClick={handleSend}
               className="p-1.5 text-white bg-indigo-600 rounded-full shadow-sm"
             >
@@ -162,8 +251,15 @@ function App() {
               <span className="xs:hidden">{showCopySuccess ? '已复制' : '复制'}</span>
             </button>
             <button
-              onClick={() => handleCopy('html')}
+              onClick={exportAsImage}
               className="hidden sm:flex items-center gap-2 px-4 py-1.5 rounded-full transition-all text-sm font-medium text-slate-600 hover:bg-slate-200"
+            >
+              <ImageIcon className="w-4 h-4" />
+              图片
+            </button>
+            <button
+              onClick={() => handleCopy('html')}
+              className="hidden lg:flex items-center gap-2 px-4 py-1.5 rounded-full transition-all text-sm font-medium text-slate-600 hover:bg-slate-200"
             >
               <Download className="w-4 h-4" />
               HTML
@@ -180,31 +276,21 @@ function App() {
           mobileView === 'preview' ? "hidden md:flex" : "flex",
           "p-4 md:p-6 gap-6 md:gap-8"
         )}>
-          {/* Template Selection - Mobile Drawer Toggle */}
+          {/* Template Selection */}
           <section>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2 text-slate-700 font-medium">
                 <Palette className="w-4 h-4" />
                 <h2>选择信纸样式</h2>
               </div>
-              <button
-                onClick={() => setShowTemplateMobile(!showTemplateMobile)}
-                className="md:hidden text-xs text-indigo-600 font-medium"
-              >
-                {showTemplateMobile ? '收起' : '更换'}
-              </button>
             </div>
 
-            <div className={cn(
-              "grid grid-cols-2 gap-2 md:gap-3 transition-all",
-              !showTemplateMobile && "hidden md:grid"
-            )}>
+            <div className="grid grid-cols-2 gap-2 md:gap-3">
               {Object.entries(templates).map(([id, template]) => (
                 <button
                   key={id}
                   onClick={() => {
                     setSelectedTemplate(id);
-                    if (window.innerWidth < 768) setShowTemplateMobile(false);
                   }}
                   className={cn(
                     "relative group overflow-hidden rounded-xl border-2 transition-all p-2.5 md:p-3 text-left h-20 md:h-24 flex flex-col justify-between",
@@ -232,7 +318,7 @@ function App() {
             </div>
           </section>
 
-          {/* Tips - Collapsible on Mobile */}
+          {/* Tips */}
           <section className="bg-amber-50 rounded-xl p-3 md:p-4 border border-amber-100 hidden sm:block">
             <h3 className="text-xs md:text-sm font-semibold text-amber-800 mb-2 flex items-center gap-2">
               <CheckCircle2 className="w-3.5 h-3.5 md:w-4 md:h-4" />
@@ -298,6 +384,16 @@ function App() {
                 title="右对齐"
               >
                 <AlignRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="flex items-center gap-0.5 border-r pr-1 mr-1">
+              <button
+                onClick={handleIndent}
+                className="p-1.5 hover:bg-slate-100 rounded-md text-slate-600 transition-colors"
+                title="首行缩进"
+              >
+                <Type className="w-4 h-4" />
               </button>
             </div>
 
